@@ -1,5 +1,5 @@
 const express = require("express");
-const members = require("../../models/Members");
+let members = require("../../models/Members");
 
 const router = express.Router();
 
@@ -82,7 +82,7 @@ router.put("/:id", (request, response) => {
         message: "The requested user was not found."
       });
   } else {
-    
+
     const {
       name,
       email,
@@ -94,7 +94,32 @@ router.put("/:id", (request, response) => {
     foundMember.status = status || foundMember.status;
 
     response.json({
-      message: "Member Updated",
+      message: "Member updated",
+      member: foundMember
+    });
+  }
+});
+
+/**  
+ * @param {*} request
+ * @param {*} response
+ * @desc Delete the specified member
+ * @route DELETE /api/members:id
+ */
+router.delete("/:id", (request, response) => {
+  const foundMember = members.find(m => m.id === parseInt(request.params.id));
+
+  if (!foundMember) {
+    response
+      .status(400)
+      .json({
+        message: "The requested user was not found."
+      });
+  } else {
+    members = members.filter(m => m.id !== foundMember.id);
+
+    response.json({
+      message: "Member deleted",
       member: foundMember
     });
   }
