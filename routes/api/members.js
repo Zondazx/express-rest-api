@@ -64,6 +64,7 @@ router.post("/", (request, response) => {
 
   members.push(newMember);
   return response.json(newMember);
+  // return response.redirect("/");
 });
 
 /**  
